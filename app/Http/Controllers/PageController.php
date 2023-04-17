@@ -21,7 +21,14 @@ class PageControllerphp extends Controller
 
         $user = chat_users::create([
             'username' => $fields['username'],
-            'firstName' => $fields['firstName'],
+            'first_name' => $fields['firstName'],
+            'last_name' => $fields['lastName'],
+            'age' => $fields['age'],
+            'email' => $fields['email'],
+            'password' => $fields['password']
+
+
+
         ]);
 
         return response($user, 201);
