@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Item extends Model
+class Chat_message extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -14,9 +14,9 @@ class Item extends Model
         'image'
     ];
 
-    public function category(): BelongsTo
+   /* public function chatUser(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
-    }
+        return $this->belongsTo(Chat_user::class);
+    }*/
 }
 ?>

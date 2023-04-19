@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->binary('image')->nullable();
             $table->unsignedInteger('sender_id');
             $table->unsignedInteger('receiver_id');
-            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('sender_id')->references('id')->on('chat_users')->onDelete('cascade');
+            $table->foreign('receiver_id')->references('id')->on('chat_users')->onDelete('cascade');
             $table->timestamps();
         });
     }
