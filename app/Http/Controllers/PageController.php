@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Models\Chat_user;
@@ -40,8 +41,12 @@ class PageController extends Controller
     }
 
 
-
-
+    public function getUsersById($id)
+    {
+        $user = Chat_user::where('id', $id)
+            ->get();
+        return response($user, 200);
+    }
 
 
     public function postMessage(Request $request)
@@ -65,6 +70,26 @@ class PageController extends Controller
         return response($user_message, 201);
     }
 
+    public function getRecentMessages($user_one_id, $user_two_id)
+    {
+        $messages = users_messages::
+            where(function ($query) use ($user_one_id, $user_two_id) {
+
+                $query->where('created_at', '>', Carbon::now()->subMinutes(5)->toDateTimeString())
+                    ->where('sender_id', $user_one_id)
+                    ->where('receiver_id', $user_two_id);
+            })
+            ->orWhere(function ($query) use ($user_one_id, $user_two_id) {
+                $query->where('created_at', '>', Carbon::now()->subMinutes(5)->toDateTimeString())
+                    ->where('sender_id', $user_two_id)
+                    ->where('receiver_id', $user_one_id);
+            })
+            ->orderBy('created_at')
+            ->get();
+
+
+        return response($messages, 200);
+    }
 
     public function getMessages()
     {

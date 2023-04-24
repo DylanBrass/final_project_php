@@ -13,10 +13,12 @@ Route::middleware('auth:sanctum')->get(
 
 Route::get('/users', [PageController::class, 'getUsers']);
 Route::post('/users', [PageController::class, 'postUser']);
+Route::get('/users/{id}', [PageController::class, 'getUsersById']);
 
 
 
 Route::get('/messages', [PageController::class, 'getMessages']);
+Route::get('/messages/users/{user_one_id}&&{user_two_id}', [PageController::class, 'getRecentMessages']);
 Route::post('/messages', [PageController::class, 'postMessage']);
 
 
