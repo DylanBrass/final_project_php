@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Chat_user;
 use App\Models\Chat_message;
+use App\Models\users_messages;
 
 
 class PageController extends Controller
@@ -47,13 +48,21 @@ class PageController extends Controller
     {
         $fields = $request->validate([
             'description' => 'required|string',
-            'image' => 'string'
+            'image' => 'string',
+            'sender_id' => 'required|int',
+            'receiver_id' => 'required|int'
         ]);
         $message = Chat_message::create([
             'description' => $fields['description'],
             'image' => empty($fields['image']) ? null : $fields['image']
         ]);
-        return response($message, 201);
+
+        $user_message = users_messages::create([
+            'message_id' => $message['id'],
+            'sender_id' => $fields['sender_id'],
+            'receiver_id' => $fields['receiver_id']
+        ]);
+        return response($user_message, 201);
     }
 
 
