@@ -11,17 +11,17 @@ class Chat_user extends Model
     use HasFactory;
     protected $fillable = [
         'username',
-        'firstName',
-        'lastName',
+        'first_name',
+        'last_name',
         'age',
         'email',
         'password'
     ];
 
 
-   /* public function messages(): HasMany
+    public function messages(): HasMany
     {
         return $this->hasMany(Chat_message::class);
-    }*/
+    }
 }
 ?>
