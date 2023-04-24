@@ -37,6 +37,10 @@ class PageController extends Controller
     public function getUsers()
     {
         $arrUsers = Chat_user::all();
+        //remove password for each
+        foreach ($arrUsers as $user) {
+            unset($user['password']);
+        }
         return response($arrUsers, 200);
     }
 
@@ -45,7 +49,33 @@ class PageController extends Controller
     {
         $user = Chat_user::where('id', $id)
             ->get();
+
+
+        foreach ($user as $x) {
+            unset($x['password']);
+        }
+
+
         return response($user, 200);
+    }
+
+    public function userLogin(Request $request)
+    {
+        $fields = $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+        $user = Chat_user::where('username', $fields['username'])
+            ->where('password', md5($fields['password']))
+            ->get();
+        return response($user, 200);
+    }
+
+    public function getMessagesById($id)
+    {
+        $message = Chat_message::where('id', $id)
+            ->get();
+        return response($message, 200);
     }
 
 
@@ -91,9 +121,11 @@ class PageController extends Controller
         return response($messages, 200);
     }
 
-    public function getMessages()
-    {
-        $arrMessages = Chat_message::all();
-        return response($arrMessages, 200);
-    }
+/*
+public function getMessages()
+{
+$arrMessages = Chat_message::all();
+return response($arrMessages, 200);
+}
+*/
 }
