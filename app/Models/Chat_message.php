@@ -13,14 +13,9 @@ class Chat_message extends Model
 
     protected $fillable = [
         'description',
-        'image',
-        'sender_id',
-        'receiver_id'
+        'image'
     ];
 
-    public function User(): HasOne
-    {
-        return $this->hasOne(Chat_user::class);
-    }
+
 }
 ?>

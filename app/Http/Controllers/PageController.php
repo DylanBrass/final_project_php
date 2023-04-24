@@ -23,8 +23,8 @@ class PageController extends Controller
         $user = Chat_user::create([
             'username' => $fields['username'],
             'first_name' => $fields['firstName'],
-            'last_name' => $fields['lastName'],
-            'age' => $fields['age'],
+            'last_name' => empty($fields['lastName']) ? null : $fields['lastName'],
+            'age' => empty($fields['age']) ? null : $fields['age'],
             'email' => $fields['email'],
             'password' => md5($fields['password'])
         ]);
@@ -46,16 +46,12 @@ class PageController extends Controller
     public function postMessage(Request $request)
     {
         $fields = $request->validate([
-            'desc' => 'required|string',
-            'image' => 'string',
-            'sender_id' => 'int',
-            'receiver_id' => 'int'
+            'description' => 'required|string',
+            'image' => 'string'
         ]);
         $message = Chat_message::create([
-            'description' => $fields['desc'],
-            'image' => $fields['image'],
-            'sender_id' => $fields['sender_id'],
-            'receiver_id' => $fields['receiver_id']
+            'description' => $fields['description'],
+            'image' => empty($fields['image']) ? null : $fields['image']
         ]);
         return response($message, 201);
     }

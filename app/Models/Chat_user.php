@@ -19,9 +19,6 @@ class Chat_user extends Model
     ];
 
 
-    public function messages(): HasMany
-    {
-        return $this->hasMany(Chat_message::class);
-    }
+
 }
 ?>
