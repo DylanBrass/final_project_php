@@ -48,12 +48,11 @@ class PageController extends Controller
     public function getUsersById($id)
     {
         $user = Chat_user::where('id', $id)
-            ->get();
+            ->first();
 
 
-        foreach ($user as $x) {
-            unset($x['password']);
-        }
+        unset($user['password']);
+
 
 
         return response($user, 200);
@@ -67,7 +66,7 @@ class PageController extends Controller
         ]);
         $user = Chat_user::where('username', $fields['username'])
             ->where('password', md5($fields['password']))
-            ->get();
+            ->first();
         return response($user, 200);
     }
 
@@ -117,8 +116,23 @@ class PageController extends Controller
             ->orderBy('created_at')
             ->get();
 
+        $messagesContentJSONArray = [];
+        foreach ($messages as $message) {
 
-        return response($messages, 200);
+            $messagesContent = Chat_message::
+                where('id', '=', $message['message_id'])
+                ->orderBy('created_at')
+                ->first();
+
+            $messagesContentJSON['sender_id'] = $message['sender_id'];
+            $messagesContentJSON['receiver_id'] = $message['receiver_id'];
+
+            $messagesContentJSON['message'] = $messagesContent;
+
+            array_push($messagesContentJSONArray, $messagesContentJSON);
+        }
+
+        return response($messagesContentJSONArray, 200);
     }
 
 /*
