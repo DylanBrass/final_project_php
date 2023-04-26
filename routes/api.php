@@ -11,6 +11,7 @@ Route::middleware('auth:sanctum')->get(
 );
 
 
+
 Route::get('/users', [PageController::class, 'getUsers']);
 Route::post('/users', [PageController::class, 'postUser']);
 Route::get('/users/{id}', [PageController::class, 'getUsersById']);

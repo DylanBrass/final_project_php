@@ -41,6 +41,7 @@ class PageController extends Controller
         foreach ($arrUsers as $user) {
             unset($user['password']);
         }
+
         return response($arrUsers, 200);
     }
 
