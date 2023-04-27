@@ -68,6 +68,8 @@ class PageController extends Controller
         $user = Chat_user::where('username', $fields['username'])
             ->where('password', md5($fields['password']))
             ->first();
+
+        unset($user['password']);
         return response($user, 200);
     }
 
