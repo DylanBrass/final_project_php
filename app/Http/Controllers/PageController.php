@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Chat_user;
 use App\Models\Chat_message;
 use App\Models\users_messages;
+use SebastianBergmann\Environment\Console;
 
 
 class PageController extends Controller
@@ -81,24 +82,30 @@ class PageController extends Controller
     }
 
 
+
     public function postMessage(Request $request)
     {
         $fields = $request->validate([
             'description' => 'required|string',
-            'image' => 'string',
+            'image' => 'nullable',
             'sender_id' => 'required|int',
             'receiver_id' => 'required|int'
         ]);
+
+        if ($fields['image'] != "") {
+            $fields['image'] = fopen($fields['image'], 'rb');
+        }
+
         $message = Chat_message::create([
             'description' => $fields['description'],
-            'image' => empty($fields['image']) ? null : $fields['image']
+            'image' => $fields['image']
         ]);
-
         $user_message = users_messages::create([
             'message_id' => $message['id'],
             'sender_id' => $fields['sender_id'],
             'receiver_id' => $fields['receiver_id']
         ]);
+
         return response($user_message, 201);
     }
 
@@ -127,6 +134,8 @@ class PageController extends Controller
                 ->orderBy('created_at')
                 ->first();
 
+            $messagesContent['image'] = base64_encode($messagesContent['image']);
+
             $messagesContentJSON['sender_id'] = $message['sender_id'];
             $messagesContentJSON['receiver_id'] = $message['receiver_id'];
 
@@ -134,6 +143,7 @@ class PageController extends Controller
 
             array_push($messagesContentJSONArray, $messagesContentJSON);
         }
+
 
         return response($messagesContentJSONArray, 200);
     }
