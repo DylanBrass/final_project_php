@@ -86,7 +86,7 @@ class PageController extends Controller
     public function postMessage(Request $request)
     {
         $fields = $request->validate([
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'image' => 'nullable',
             'sender_id' => 'required|int',
             'receiver_id' => 'required|int'

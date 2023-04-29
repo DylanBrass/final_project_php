@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->binary('image')->nullable();
             $table->timestamps();
         });
