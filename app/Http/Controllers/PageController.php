@@ -126,6 +126,39 @@ class PageController extends Controller
             ->orderBy('created_at')
             ->get();
 
+        if ($messages === null || count($messages) < 1) {
+            $message = users_messages::
+                where(function ($query) use ($user_one_id, $user_two_id) {
+                    $query->where('sender_id', $user_one_id)
+                        ->where('receiver_id', $user_two_id);
+                })
+                ->orWhere(function ($query) use ($user_one_id, $user_two_id) {
+                    $query->where('sender_id', $user_two_id)
+                        ->where('receiver_id', $user_one_id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            $messagesContentJSONArray = [];
+
+
+
+            $messagesContent = Chat_message::
+                where('id', '=', $message['message_id'])
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            $messagesContent['image'] = base64_encode($messagesContent['image']);
+
+            $messagesContentJSON['sender_id'] = $message['sender_id'];
+            $messagesContentJSON['receiver_id'] = $message['receiver_id'];
+
+            $messagesContentJSON['message'] = $messagesContent;
+
+            array_push($messagesContentJSONArray, $messagesContentJSON);
+            return response($messagesContentJSONArray, 200);
+        }
+
         $messagesContentJSONArray = [];
         foreach ($messages as $message) {
 
