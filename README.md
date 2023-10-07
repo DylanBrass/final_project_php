@@ -17,6 +17,7 @@ The application is a dynamic chat room where users gain access by signing in wit
 - Laravel Framework for web service implentation in PHP.
 - Blade
 - JavaScript
+- phpMyAdmin
   
 <a name="functions"></a>
 ## Used Functions
